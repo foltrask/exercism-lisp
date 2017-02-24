@@ -6,6 +6,7 @@
 
 (defun distance (dna1 dna2)
   "Number of positional differences in two equal length dna strands." 
-  (if (eql (length dna1)(length dna2))
-        (loop for i from 0 below (length dna1)
-             count (char-not-equal (char dna1 i)(char dna2 i)))))
+  (if (= (length dna1)(length dna2))
+      (loop for c across dna1
+            for d across dna2
+              count (char-not-equal c d))))
