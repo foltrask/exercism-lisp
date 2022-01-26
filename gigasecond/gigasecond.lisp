@@ -1,17 +1,12 @@
 (in-package #:cl-user)
 (defpackage #:gigasecond
   (:use #:cl)
-  (:use #:simple-date-time)
   (:export #:from))
 (in-package #:gigasecond)
 
 (defparameter *gigasecond* (expt 10 9))
-(defun from (year month day hour minute second)
-  (let ((giga-date (second+ (make-date-time year month day hour minute second)
-                           *gigasecond*)))
-    (list (year-of giga-date)
-          (month-of giga-date)
-          (day-of giga-date)
-          (hour-of giga-date)
-          (minute-of giga-date)
-          (second-of giga-date))))
+(defun from (year month date hour minute second)
+  (multiple-value-bind ( second minute hour date month year ) 
+    (decode-universal-time (+ *gigasecond*
+                              (encode-universal-time second minute hour date month year 0)) 0)
+    (list year month date hour minute second)))
